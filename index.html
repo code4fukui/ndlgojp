@@ -1,0 +1,54 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width">
+
+<h1>国立国会図書館デジタルコレクション タイトル検索</h1>
+<input id=key>
+<div id=list>loading...</div>
+<hr>
+Data: 「<a href=https://www.ndl.go.jp/jp/dlib/standards/opendataset/index.html>オープンデータセット｜国立国会図書館-National Diet Library</a>」の図書データを<a href=ndlgojp_list.csv>CSVファイル</a>に加工して利用<br>
+App: CC BY <a href=https://github.com/code4fukui/ndlgojp/>Code for FUKUI src on GitHub</a><br>
+
+<script type="module">
+import { CSV } from "https://js.sabae.cc/CSV.js";
+import { create } from "https://js.sabae.cc/stdcomp.js";
+
+onload = async () => {
+  const url = "ndlgojp_list.csv";
+  const data = CSV.toJSON(await CSV.fetch(url));
+
+  const max = 1000;
+  const show = () => {
+    const keyword = key.value;
+    list.innerHTML = "";
+    let cnt = 0;
+    for (const d of data) {
+      if (d.title.indexOf(keyword) == -1) {
+        continue;
+      }
+      cnt++;
+      if (cnt++ >= max) {
+        create("div", list).textContent = "など";
+        break;
+      }
+      const a = create("a", list);
+      a.textContent = d.title;
+      a.href = "https://dl.ndl.go.jp/info:ndljp/pid/" + d.pid;
+    }
+  };
+  show();
+
+  key.onchange = () => {
+    show();
+  };
+};
+</script>
+
+<style>
+input {
+  font-size: 120%;
+  width: 80vw;
+  margin-bottom: .8em;
+}
+#list a {
+  display: block;
+}
+</style>
