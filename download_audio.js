@@ -9,7 +9,7 @@ const ss = txt.split("\n");
 const path = "audio/" + url.substring(url.lastIndexOf("/") + 1, url.lastIndexOf("."));
 const baseurl = url.substring(0, url.lastIndexOf("/") + 1);
 const key = await fetchBin(baseurl + "encrypt.key");
-await Deno.writeFile(path + "/encrypt.key", key);
+await Deno.writeFile("audio/encrypt.key", key);
 await Deno.mkdir(path, { recursive: true });
 for (const s of ss) {
   if (s.length == 0 || s.startsWith("#")) continue;
