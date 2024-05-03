@@ -1,0 +1,43 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><link rel="icon" href="data:">
+<title>audio-player for 国会図書館歴史的音源</title>
+</head><body>
+<h1>audio-player for 国会図書館歴史的音源</h1>
+
+<!--
+hls.js
+https://hlsjs.video-dev.org/demo/
+-->
+
+<script src="https://cdn.jsdelivr.net/npm/hls.js@1"></script>
+<!-- Or if you want the latest version from the main branch -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/hls.js@canary"></script> -->
+<video id="video" controls></video>
+<button id=btn>play</button>
+<script>
+var video = document.getElementById('video');
+const videoSrc = "audio/b6c669bd-91c9-4ea5-95cc-1cfeec2c4344_hls/b6c669bd-91c9-4ea5-95cc-1cfeec2c4344_hls.m3u8";
+console.log("Hls.isSupported()", Hls.isSupported());
+console.log("application/vnd.apple.mpegurl", video.canPlayType("application/vnd.apple.mpegurl"));
+//console.log("video/mp4", video.canPlayType("video/mp4"));
+if (Hls.isSupported()) {
+  const hls = new Hls();
+  hls.loadSource(videoSrc);
+  hls.attachMedia(video);
+  video.play();
+} else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+  video.src = videoSrc;
+}
+btn.onclick = () => {
+  video.play();
+};
+</script>
+
+<style>
+video {
+  display: none;
+}
+</style>
+
+<hr>
+DATA: <a href=https://ndlsearch.ndl.go.jp/books/R100000039-I1313607>佐渡おけさ (ニ) | NDLサーチ | 国立国会図書館</a><br>
+<a href=https://github.com/code4fukui/opendata-ndlgojp/>src on GitHub</a>
